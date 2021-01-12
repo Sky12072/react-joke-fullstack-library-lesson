@@ -13,12 +13,14 @@ export default function NewJoke() {
 	const [formState,setFormState] = useState(initialFormState)
 	let history = useHistory()
 	let {id} = useParams()
-	const {dispatch} = useGlobalState()
+	const {dispatch, store} = useGlobalState()
+	const {jokes} = store;
 
 	useEffect(() => {
 		if(id) {
 			getJoke(id)
 			.then((joke) => {
+				console.log(joke)
 				const category = categories.find((category) => category.name.toLowerCase() === joke.category.toLowerCase())
 				setFormState({
 					category_id: category.id,
@@ -27,6 +29,13 @@ export default function NewJoke() {
 			})
 		}
 	},[id])
+
+	function getLastId() {
+		console.log(jokes)
+		const ids = jokes.map(joke => joke.id)
+		console.log(ids)
+		return Math.max(...ids)
+	}
 
 	function handleChange(event) {
 		setFormState({
@@ -45,10 +54,12 @@ export default function NewJoke() {
 			})
 		}
 		else {
-			createJoke({joke: formState})
+			const nextId = getLastId() + 1;
+			createJoke({...formState, id: nextId})
 			.then((joke) => {
-				dispatch({type: 'addJoke', data: joke.data})
-				history.push(`/jokes/${joke.data.id}`)
+		
+				dispatch({type: 'addJoke', data: joke})
+				history.push('/jokes')
 			})
 			.catch((error) => console.log(error))
 		}

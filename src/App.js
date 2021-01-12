@@ -11,7 +11,7 @@ import SignIn from './components/SignIn'
 import NewJoke from './components/NewJoke'
 import NewUser from './components/NewUser'
 import {Header} from './components/Styled'
-import api from './config/api'
+
 
 
 const App = () => {
@@ -28,13 +28,7 @@ const App = () => {
 		.catch((error) => console.log(error))
 	},[])
 
-	const {auth: {token}} = store
-	api.interceptors.request.use(request => {
-		if (token) {
-			request.headers["Authorization"] = `Bearer ${token}`
-		}
-		return request
-	})
+
 
 	return (
 		<div>

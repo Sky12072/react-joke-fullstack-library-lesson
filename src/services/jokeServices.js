@@ -1,4 +1,4 @@
-import api from '../config/api'
+import {categories} from '../utils/categories'
 
 const jokes = [
  {id: 1, body: "A good steak pun is a rare medium done well", category_id: 1, created_at: "2021-01-11T01:33:50.019Z", updated_at: "2021-01-11T01:33:50.019Z", user_id: 1},
@@ -9,47 +9,54 @@ const jokes = [
  {id: 6, body: "A programmer is heading out to the grocery store, …get a dozen. He returns with 13 gallons of milk.", category_id: 2, created_at: "2021-01-11T01:33:50.055Z", updated_at: "2021-01-11T01:33:50.055Z", user_id: 1},
  {id: 7, body: "Why do programmers give you a gift on Halloween? Because OCT 30 == DEC 25", category_id: 2, created_at: "2021-01-11T01:33:50.062Z", updated_at: "2021-01-11T01:33:50.062Z", user_id: 1}
 ]
+
+
+function transformJoke(joke) {
+	const category = categories.find(category => category.id === joke.category_id)
+	return {
+		author: "Test",
+		category: category.name, 
+		posted: joke.created_at,
+		body: joke.body
+	}
+
+}
+
 export async function getJokes() {
-	const jokes = await api.get('/api/jokes')
-	return jokes.data
+	return jokes
 	// return Promise.resolve(jokes)
 }
 
+
 export async function getJoke(id) {
-	const jokes = await api.get(`/api/jokes/${id}`)
-	return jokes.data
-	// const joke = jokes.find((joke) => joke.id === id)
-	// return Promise.resolve(joke)
+	const joke = jokes.find(joke => joke.id == id)
+	return joke ? transformJoke(joke) : null
 }
 
 export async function getRandomJoke() {
-	const joke = await api.get('/api/jokes/random')
-	return joke.data
-	/* const randomJoke = {
-		body: "A good steak pun is a rare medium done well"
-		category_id: 1
-		created_at: "2021-01-11T01:33:50.019Z"
-		id: 1
-		updated_at: "2021-01-11T01:33:50.019Z"
-		user_id: 1
+
+	const randomJoke = {
+		body: "A good steak pun is a rare medium done well",
+		category_id: 1,
+		created_at: "2021-01-11T01:33:50.019Z",
+		id: 1,
+		updated_at: "2021-01-11T01:33:50.019Z",
+		user_id: 1,
 	}
-	*/
-	//return Promise.resolve(randomJoke)
+	
+	return randomJoke
 }
 
 export async function createJoke(joke) {
-	const newJoke = await api.post('/api/jokes',joke)
-	return newJoke
-	//return Promise.resolve(joke)
+	return joke
 }
 
 export async function deleteJoke(id) {
-	return await api.delete(`/api/jokes/${id}`)
-	//return Promise.resolve(id)
+	console.log("ran")
+	return id
 }
 
 export async function updateJoke(joke) {
-	const updatedJoke = await api.put(`/api/jokes/${joke.id}`,joke)
-	return updatedJoke
-	//return Promise.resolve(joke)
+	return joke
+	
 }

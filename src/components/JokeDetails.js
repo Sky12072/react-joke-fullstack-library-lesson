@@ -22,7 +22,7 @@ export default function JokeDetails() {
 	function handleDelete() {
 		deleteJoke(id)
 		.then(() => {
-			dispatch({type: 'deleteJokes', data: id})
+			dispatch({type: 'deleteJoke', data: id})
 			history.push('/jokes')
 		})
 	}
