@@ -26,7 +26,7 @@ export default function NewUser() {
 		event.preventDefault()
 		signUp(formState)
 		.then((data) => {
-			sessionStorage.setItem("token", jwt);
+			sessionStorage.setItem("token", data.jwt);
 			sessionStorage.setItem("user", data.username);
 			dispatch({type: 'setLoggedInUser', data: data.username})
 			history.push('/jokes')

@@ -48,7 +48,7 @@ export async function getRandomJoke() {
 export async function createJoke(joke) {
 	const response = await jokeAPI.post('api/jokes', joke)
 	console.log (response)
-	return response.data
+	return response.data;
 }
 
 export async function deleteJoke(id) {

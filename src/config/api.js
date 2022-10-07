@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const jokeAPI = axios.create({
-    baseURL: 'https://rails-api-fullstack-lesson.herokuapp.com/'
+    baseURL: 'http://localhost:3000'
 })
 
 jokeAPI.interceptors.request.use((req) => {
