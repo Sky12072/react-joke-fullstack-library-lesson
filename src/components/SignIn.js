@@ -18,9 +18,12 @@ export default function SignIn({history}) {
 	}
 	function handleSubmit(event) {
 		event.preventDefault()
+		// can we actually call the signIn function within the signIn function ??
 		signIn(formState)
 		.then(({username,jwt}) => {
-			console.log(username, jwt);
+			
+			sessionStorage.setItem("token", jwt);
+			sessionStorage.setItem("user", username);
 			dispatch({type: 'setLoggedInUser', data: username})
 			dispatch({type: 'setToken', data: jwt})
 			history.push('/')

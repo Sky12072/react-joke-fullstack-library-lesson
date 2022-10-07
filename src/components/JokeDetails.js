@@ -9,14 +9,19 @@ import {deleteJoke} from '../services/jokeServices'
 export default function JokeDetails() {
 	const [joke,setJoke] = useState(null)
 	const {id} = useParams()
+
 	let history = useHistory()
+
 	const {store,dispatch} = useGlobalState()
 	const {loggedInUser} = store
+
 	useEffect(() => {
 		getJoke(id)
 		.then((joke) => setJoke(joke))
 		.catch((error) => console.log(error))
 	},[id])
+	// 👆when the id changes, which happens on the inital load or when the page changes,
+	// then we going to run getJoke(id) -> coming from JokeServices.js
 
 	if (!joke) return null
 	function handleDelete() {
@@ -26,6 +31,7 @@ export default function JokeDetails() {
 			history.push('/jokes')
 		})
 	}
+	// else return 👇
 	return (
 		<div>
 			<p>Written by: {joke.author}</p>			

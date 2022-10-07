@@ -24,7 +24,10 @@ export default function Nav({setRandomJoke}) {
 	function handleSignOut(event) {
 		event.preventDefault()
 		signOut(loggedInUser)
-		.then(() => dispatch({type: 'setLoggedInUser', data: null}))
+		.then(() => {
+			dispatch({type: 'setLoggedInUser', data: null})
+			dispatch({type: 'setToken', data: null})
+		})
 	}
 
 	return (

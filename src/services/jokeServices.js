@@ -1,5 +1,7 @@
 import {categories} from '../utils/categories'
+import jokeAPI from '../config/api';
 
+// this is the joke database
 const jokes = [
  {id: 1, body: "A good steak pun is a rare medium done well", category_id: 1, created_at: "2021-01-11T01:33:50.019Z", updated_at: "2021-01-11T01:33:50.019Z", user_id: 1},
  {id: 2, body: "I was wondering why the ball was getting bigger. Then it hit me", category_id: 1, created_at: "2021-01-11T01:33:50.026Z", updated_at: "2021-01-11T01:33:50.026Z", user_id: 1},
@@ -10,7 +12,7 @@ const jokes = [
  {id: 7, body: "Why do programmers give you a gift on Halloween? Because OCT 30 == DEC 25", category_id: 2, created_at: "2021-01-11T01:33:50.062Z", updated_at: "2021-01-11T01:33:50.062Z", user_id: 1}
 ]
 
-
+// this function is returning objects especially containing the correct category name
 function transformJoke(joke) {
 	const category = categories.find(category => category.id === joke.category_id)
 	return {
@@ -22,41 +24,40 @@ function transformJoke(joke) {
 
 }
 
+// this function is for exporting the jokes database
 export async function getJokes() {
-	return jokes
+	const response = await jokeAPI.get('/api/jokes')
+	console.log (response)
+	return response.data
 	// return Promise.resolve(jokes)
 }
 
-
+// this function is for getting joke based on the id number
 export async function getJoke(id) {
-	const joke = jokes.find(joke => joke.id == id)
-	return joke ? transformJoke(joke) : null
+	const response = await jokeAPI.get(`/api/jokes/${id}`)
+	return response.data
 }
 
+// this function is for just returning the randomjoke's object content
 export async function getRandomJoke() {
 
-	const randomJoke = {
-		body: "A good steak pun is a rare medium done well",
-		category_id: 1,
-		created_at: "2021-01-11T01:33:50.019Z",
-		id: 1,
-		updated_at: "2021-01-11T01:33:50.019Z",
-		user_id: 1,
-	}
-	
-	return randomJoke
+	const response = await jokeAPI.get('/api/jokes/random')
+	return response.data
 }
 
 export async function createJoke(joke) {
-	return joke
+	const response = await jokeAPI.post('api/jokes', joke)
+	console.log (response)
+	return response.data
 }
 
 export async function deleteJoke(id) {
-	console.log("ran")
-	return id
+	const response = await jokeAPI.delete(`/api/jokes/${id}`);
+	return response.data
 }
 
-export async function updateJoke(joke) {
-	return joke
+export async function updateJoke(data) {
+	const response = await jokeAPI.put(`/api/jokes/${data.id}`, {body: data.body, category_id: data.category_id});
+	return response.data
 	
 }

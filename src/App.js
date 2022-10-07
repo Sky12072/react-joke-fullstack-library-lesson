@@ -1,6 +1,7 @@
 import React,{useState, useReducer, useEffect} from 'react'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import {getJokes} from './services/jokeServices'
+import { getCategories } from './services/categoryServices'
 import stateReducer from './utils/stateReducer'
 import {StateContext} from './utils/stateContext'
 import Jokes from './components/Jokes'
@@ -17,8 +18,9 @@ import {Header} from './components/Styled'
 const App = () => {
 	const initialState = {
 		jokes: [],
-		loggedInUser: null,
-		auth: {token: null}
+		categories: [],
+		loggedInUser: sessionStorage.getItem("user") || null,
+		auth: {token: sessionStorage.getItem("token") || null}
 	}
 	const [store, dispatch] = useReducer(stateReducer,initialState)
 	const [randomJoke, setRandomJoke] = useState(null)
@@ -26,6 +28,9 @@ const App = () => {
 		getJokes()
 		.then((jokes) => dispatch({type: 'setJokes', data: jokes}))
 		.catch((error) => console.log(error))
+		getCategories()
+		.then(categories => dispatch({type: 'setCategories', data: categories}))
+		.catch(error => console.log(error))
 	},[])
 
 

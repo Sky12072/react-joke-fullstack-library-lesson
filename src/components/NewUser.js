@@ -13,7 +13,9 @@ export default function NewUser() {
 	}
 	const [formState, setFormState] = useState(initialFormState)
 	const {dispatch} = useGlobalState()
+
 	let history = useHistory()
+
 	function handleChange(event) {
 		setFormState({
 			...formState,
@@ -23,8 +25,10 @@ export default function NewUser() {
 	function handleRegister(event) {
 		event.preventDefault()
 		signUp(formState)
-		.then((user) => {
-			dispatch({type: 'setLoggedInUser', data: user.username})
+		.then((data) => {
+			sessionStorage.setItem("token", jwt);
+			sessionStorage.setItem("user", data.username);
+			dispatch({type: 'setLoggedInUser', data: data.username})
 			history.push('/jokes')
 		})
 	}
